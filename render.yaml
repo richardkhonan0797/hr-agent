@@ -1,0 +1,62 @@
+# Free public demo. Seed Neon and migrate quotas locally before sharing the UI.
+services:
+  - type: web
+    name: hr-demo-api
+    runtime: docker
+    plan: free
+    region: singapore
+    rootDir: HR-Agent
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    dockerCommand: python -m src.render_start api
+    healthCheckPath: /healthz
+    autoDeployTrigger: "off"
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_BASE_URL
+        sync: false
+      - key: AGENT_MODEL
+        sync: false
+      - key: EMBEDDING_MODEL
+        sync: false
+      - key: EMBEDDING_DIMENSIONS
+        sync: false
+      - key: POLICY_INDEX_VERSION
+        value: policies-2026-01
+      - key: MODEL_MODE
+        value: live
+      - key: PUBLIC_DEMO
+        value: "true"
+      - key: DEMO_DAILY_CHAT_LIMIT
+        value: "500"
+      - key: DEMO_MINUTE_CHAT_LIMIT
+        value: "10"
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: hr-demo-cache
+          property: connectionString
+  - type: web
+    name: hr-demo-ui
+    runtime: docker
+    plan: free
+    region: singapore
+    rootDir: HR-Agent
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    dockerCommand: python -m src.render_start ui
+    healthCheckPath: /_stcore/health
+    autoDeployTrigger: "off"
+    envVars:
+      # Enter the API's actual public HTTPS URL after Render assigns it.
+      - key: API_URL
+        sync: false
+  - type: redis
+    name: hr-demo-cache
+    plan: free
+    region: singapore
+    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []

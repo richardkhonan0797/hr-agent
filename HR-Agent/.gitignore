@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+outputs/*.json
+outputs/*.md
+outputs/*.dump
+.streamlit/secrets.toml
+
+.step11-stage/

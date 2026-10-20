@@ -1,0 +1,2677 @@
+{
+  "healthz": {
+    "body": {
+      "status": "ok"
+    },
+    "status_code": 200
+  },
+  "readyz": {
+    "body": {
+      "status": "ready",
+      "checks": {
+        "database": "ready",
+        "redis": "ready",
+        "model": "ready"
+      }
+    },
+    "status_code": 200
+  },
+  "openapi.json": {
+    "body": {
+      "openapi": "3.1.0",
+      "info": {
+        "title": "HR Policy and Leave Assistant",
+        "version": "0.1.0"
+      },
+      "paths": {
+        "/healthz": {
+          "get": {
+            "summary": "Health",
+            "operationId": "health_healthz_get",
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": {
+                        "type": "string"
+                      },
+                      "type": "object",
+                      "title": "Response Health Healthz Get"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/readyz": {
+          "get": {
+            "summary": "Ready",
+            "operationId": "ready_readyz_get",
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {}
+                  }
+                }
+              },
+              "503": {
+                "description": "Service Unavailable",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/api/v1/chat": {
+          "post": {
+            "summary": "Chat",
+            "operationId": "chat_api_v1_chat_post",
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ChatRequest"
+                  }
+                }
+              },
+              "required": true
+            },
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ChatResponse"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthorized",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Forbidden",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Not Found",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Conflict",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Unprocessable Entity",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal Server Error",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Service Unavailable",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "HTTPBearer": []
+              }
+            ]
+          }
+        },
+        "/api/v1/action-proposals/{proposal_id}/confirm": {
+          "post": {
+            "summary": "Confirm",
+            "operationId": "confirm_api_v1_action_proposals__proposal_id__confirm_post",
+            "security": [
+              {
+                "HTTPBearer": []
+              }
+            ],
+            "parameters": [
+              {
+                "name": "proposal_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Proposal Id"
+                }
+              }
+            ],
+            "requestBody": {
+              "required": true,
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ConfirmActionRequest"
+                  }
+                }
+              }
+            },
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/ActionResult"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthorized",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Forbidden",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Not Found",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Conflict",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Unprocessable Entity",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal Server Error",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Service Unavailable",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/api/v1/leave-requests/me": {
+          "get": {
+            "summary": "My Requests",
+            "operationId": "my_requests_api_v1_leave_requests_me_get",
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "items": {
+                        "$ref": "#/components/schemas/LeaveRequestView"
+                      },
+                      "type": "array",
+                      "title": "Response My Requests Api V1 Leave Requests Me Get"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthorized",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Forbidden",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Not Found",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Conflict",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Unprocessable Entity",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal Server Error",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Service Unavailable",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "HTTPBearer": []
+              }
+            ]
+          }
+        },
+        "/api/v1/traces/{trace_id}": {
+          "get": {
+            "summary": "Trace",
+            "operationId": "trace_api_v1_traces__trace_id__get",
+            "security": [
+              {
+                "HTTPBearer": []
+              }
+            ],
+            "parameters": [
+              {
+                "name": "trace_id",
+                "in": "path",
+                "required": true,
+                "schema": {
+                  "type": "string",
+                  "title": "Trace Id"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "$ref": "#/components/schemas/TraceRecord"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthorized",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Forbidden",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Not Found",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Conflict",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Unprocessable Entity",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal Server Error",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Service Unavailable",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "default": "about:blank",
+                          "title": "Type",
+                          "type": "string"
+                        },
+                        "title": {
+                          "title": "Title",
+                          "type": "string"
+                        },
+                        "status": {
+                          "title": "Status",
+                          "type": "integer"
+                        },
+                        "detail": {
+                          "title": "Detail",
+                          "type": "string"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail",
+                      "type": "object"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "/api/v1/monitoring/summary": {
+          "get": {
+            "summary": "Summary",
+            "operationId": "summary_api_v1_monitoring_summary_get",
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "additionalProperties": true,
+                      "type": "object",
+                      "title": "Response Summary Api V1 Monitoring Summary Get"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthorized",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Forbidden",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Not Found",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Conflict",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Unprocessable Entity",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal Server Error",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Service Unavailable",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "HTTPBearer": []
+              }
+            ]
+          }
+        },
+        "/api/v1/monitoring/alerts": {
+          "get": {
+            "summary": "Alerts",
+            "operationId": "alerts_api_v1_monitoring_alerts_get",
+            "responses": {
+              "200": {
+                "description": "Successful Response",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "items": {
+                        "additionalProperties": true,
+                        "type": "object"
+                      },
+                      "type": "array",
+                      "title": "Response Alerts Api V1 Monitoring Alerts Get"
+                    }
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthorized",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "403": {
+                "description": "Forbidden",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "404": {
+                "description": "Not Found",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "409": {
+                "description": "Conflict",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "422": {
+                "description": "Unprocessable Entity",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "500": {
+                "description": "Internal Server Error",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              },
+              "503": {
+                "description": "Service Unavailable",
+                "content": {
+                  "application/problem+json": {
+                    "schema": {
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "title": "Type",
+                          "default": "about:blank"
+                        },
+                        "title": {
+                          "type": "string",
+                          "title": "Title"
+                        },
+                        "status": {
+                          "type": "integer",
+                          "title": "Status"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "title": "Detail"
+                        },
+                        "trace_id": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ],
+                          "title": "Trace Id"
+                        }
+                      },
+                      "type": "object",
+                      "required": [
+                        "title",
+                        "status",
+                        "detail"
+                      ],
+                      "title": "ProblemDetail"
+                    }
+                  }
+                }
+              }
+            },
+            "security": [
+              {
+                "HTTPBearer": []
+              }
+            ]
+          }
+        }
+      },
+      "components": {
+        "schemas": {
+          "ActionProposal": {
+            "properties": {
+              "proposal_id": {
+                "type": "string",
+                "title": "Proposal Id"
+              },
+              "action_type": {
+                "type": "string",
+                "const": "leave_request",
+                "title": "Action Type",
+                "default": "leave_request"
+              },
+              "leave_type": {
+                "type": "string",
+                "title": "Leave Type"
+              },
+              "start_date": {
+                "type": "string",
+                "format": "date",
+                "title": "Start Date"
+              },
+              "end_date": {
+                "type": "string",
+                "format": "date",
+                "title": "End Date"
+              },
+              "business_days": {
+                "type": "integer",
+                "exclusiveMinimum": 0.0,
+                "title": "Business Days"
+              },
+              "reason": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Reason"
+              },
+              "validation_summary": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Validation Summary"
+              },
+              "expires_at": {
+                "type": "string",
+                "format": "date-time",
+                "title": "Expires At"
+              },
+              "requires_confirmation": {
+                "type": "boolean",
+                "const": true,
+                "title": "Requires Confirmation",
+                "default": true
+              }
+            },
+            "type": "object",
+            "required": [
+              "proposal_id",
+              "leave_type",
+              "start_date",
+              "end_date",
+              "business_days",
+              "validation_summary",
+              "expires_at"
+            ],
+            "title": "ActionProposal"
+          },
+          "ActionResult": {
+            "properties": {
+              "request_id": {
+                "type": "string",
+                "title": "Request Id"
+              },
+              "status": {
+                "type": "string",
+                "const": "pending_manager_review",
+                "title": "Status",
+                "default": "pending_manager_review"
+              },
+              "idempotent_replay": {
+                "type": "boolean",
+                "title": "Idempotent Replay"
+              },
+              "audit_reference": {
+                "type": "string",
+                "title": "Audit Reference"
+              }
+            },
+            "type": "object",
+            "required": [
+              "request_id",
+              "idempotent_replay",
+              "audit_reference"
+            ],
+            "title": "ActionResult"
+          },
+          "ChatRequest": {
+            "properties": {
+              "message": {
+                "type": "string",
+                "maxLength": 4000,
+                "minLength": 1,
+                "title": "Message"
+              },
+              "conversation_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Conversation Id"
+              }
+            },
+            "type": "object",
+            "required": [
+              "message"
+            ],
+            "title": "ChatRequest"
+          },
+          "ChatResponse": {
+            "properties": {
+              "answer": {
+                "type": "string",
+                "title": "Answer"
+              },
+              "outcome": {
+                "$ref": "#/components/schemas/Outcome"
+              },
+              "citations": {
+                "items": {
+                  "$ref": "#/components/schemas/Citation"
+                },
+                "type": "array",
+                "title": "Citations"
+              },
+              "tool_calls": {
+                "items": {
+                  "$ref": "#/components/schemas/ToolCallSummary"
+                },
+                "type": "array",
+                "title": "Tool Calls"
+              },
+              "action_proposal": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/ActionProposal"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "trace_id": {
+                "type": "string",
+                "title": "Trace Id"
+              },
+              "usage": {
+                "$ref": "#/components/schemas/UsageSummary"
+              }
+            },
+            "type": "object",
+            "required": [
+              "answer",
+              "outcome",
+              "trace_id",
+              "usage"
+            ],
+            "title": "ChatResponse"
+          },
+          "Citation": {
+            "properties": {
+              "document_id": {
+                "type": "string",
+                "title": "Document Id"
+              },
+              "title": {
+                "type": "string",
+                "title": "Title"
+              },
+              "section": {
+                "type": "string",
+                "title": "Section"
+              },
+              "excerpt": {
+                "type": "string",
+                "title": "Excerpt"
+              }
+            },
+            "type": "object",
+            "required": [
+              "document_id",
+              "title",
+              "section",
+              "excerpt"
+            ],
+            "title": "Citation"
+          },
+          "ConfirmActionRequest": {
+            "properties": {
+              "idempotency_key": {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 8,
+                "title": "Idempotency Key"
+              }
+            },
+            "type": "object",
+            "required": [
+              "idempotency_key"
+            ],
+            "title": "ConfirmActionRequest"
+          },
+          "LeaveRequestView": {
+            "properties": {
+              "request_id": {
+                "type": "string",
+                "title": "Request Id"
+              },
+              "leave_type": {
+                "type": "string",
+                "title": "Leave Type"
+              },
+              "start_date": {
+                "type": "string",
+                "format": "date",
+                "title": "Start Date"
+              },
+              "end_date": {
+                "type": "string",
+                "format": "date",
+                "title": "End Date"
+              },
+              "business_days": {
+                "type": "integer",
+                "title": "Business Days"
+              },
+              "status": {
+                "type": "string",
+                "title": "Status"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "title": "Created At"
+              }
+            },
+            "type": "object",
+            "required": [
+              "request_id",
+              "leave_type",
+              "start_date",
+              "end_date",
+              "business_days",
+              "status",
+              "created_at"
+            ],
+            "title": "LeaveRequestView"
+          },
+          "Outcome": {
+            "type": "string",
+            "enum": [
+              "answered",
+              "action_proposed",
+              "escalated",
+              "abstained"
+            ],
+            "title": "Outcome"
+          },
+          "ToolCallSummary": {
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ok",
+                  "blocked",
+                  "error"
+                ],
+                "title": "Status"
+              },
+              "duration_ms": {
+                "type": "integer",
+                "minimum": 0.0,
+                "title": "Duration Ms"
+              }
+            },
+            "type": "object",
+            "required": [
+              "name",
+              "status",
+              "duration_ms"
+            ],
+            "title": "ToolCallSummary"
+          },
+          "TraceRecord": {
+            "properties": {
+              "trace_id": {
+                "type": "string",
+                "title": "Trace Id"
+              },
+              "employee_id": {
+                "type": "string",
+                "title": "Employee Id"
+              },
+              "outcome": {
+                "$ref": "#/components/schemas/Outcome"
+              },
+              "retrieved_document_ids": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "title": "Retrieved Document Ids"
+              },
+              "tool_calls": {
+                "items": {
+                  "$ref": "#/components/schemas/ToolCallSummary"
+                },
+                "type": "array",
+                "title": "Tool Calls"
+              },
+              "latency_ms": {
+                "type": "integer",
+                "minimum": 0.0,
+                "title": "Latency Ms",
+                "default": 0
+              },
+              "input_tokens": {
+                "type": "integer",
+                "minimum": 0.0,
+                "title": "Input Tokens",
+                "default": 0
+              },
+              "output_tokens": {
+                "type": "integer",
+                "minimum": 0.0,
+                "title": "Output Tokens",
+                "default": 0
+              },
+              "estimated_cost": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0.0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Estimated Cost"
+              },
+              "error": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Error"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time",
+                "title": "Created At"
+              }
+            },
+            "type": "object",
+            "required": [
+              "trace_id",
+              "employee_id",
+              "outcome"
+            ],
+            "title": "TraceRecord"
+          },
+          "UsageSummary": {
+            "properties": {
+              "input_tokens": {
+                "type": "integer",
+                "minimum": 0.0,
+                "title": "Input Tokens",
+                "default": 0
+              },
+              "output_tokens": {
+                "type": "integer",
+                "minimum": 0.0,
+                "title": "Output Tokens",
+                "default": 0
+              },
+              "latency_ms": {
+                "type": "integer",
+                "minimum": 0.0,
+                "title": "Latency Ms",
+                "default": 0
+              },
+              "estimated_cost": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0.0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Estimated Cost"
+              }
+            },
+            "type": "object",
+            "title": "UsageSummary"
+          }
+        },
+        "securitySchemes": {
+          "HTTPBearer": {
+            "type": "http",
+            "scheme": "bearer"
+          }
+        }
+      }
+    },
+    "status_code": 200
+  },
+  "streamlit": {
+    "body": "ok",
+    "status_code": 200
+  }
+}

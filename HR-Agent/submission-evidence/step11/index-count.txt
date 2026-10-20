@@ -1,0 +1,5 @@
+ policy_chunks | unique_chunks 
+---------------+---------------
+            15 |            15
+(1 row)
+

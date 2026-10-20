@@ -1,0 +1,10 @@
+ Container hr_step11_20261019-postgres-1 Running 
+ Container hr_step11_20261019-redis-1 Running 
+ Container hr_step11_20261019-redis-1 Waiting 
+ Container hr_step11_20261019-postgres-1 Waiting 
+ Container hr_step11_20261019-redis-1 Healthy 
+ Container hr_step11_20261019-postgres-1 Healthy 
+ Container hr_step11_20261019-api-run-828075ffb87e Creating 
+ Container hr_step11_20261019-api-run-828075ffb87e Created 
+Schema dan seed pegawai, saldo, serta request historis selesai.
+Policy indexing selesai: 15 chunks.

@@ -1,0 +1,89 @@
+ Image hr_step11_20261019-streamlit Building 
+ Image hr_step11_20261019-api Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.20kB done
+#1 DONE 0.0s
+
+#2 [api internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.35kB 0.0s done
+#2 DONE 0.1s
+
+#3 [streamlit internal] load metadata for docker.io/library/python:3.11-slim
+#3 DONE 1.5s
+
+#4 [api internal] load .dockerignore
+#4 transferring context: 216B done
+#4 DONE 0.0s
+
+#5 [api 1/9] FROM docker.io/library/python:3.11-slim@sha256:e88e9763f943ec1834f992a4b51e0f24500486803e8bc534e5767af9ea65f6ce
+#5 resolve docker.io/library/python:3.11-slim@sha256:e88e9763f943ec1834f992a4b51e0f24500486803e8bc534e5767af9ea65f6ce 0.0s done
+#5 DONE 0.0s
+
+#6 [streamlit internal] load build context
+#6 transferring context: 27.89kB 0.0s done
+#6 transferring context: 27.89kB 0.0s done
+#6 DONE 0.0s
+
+#7 [streamlit 2/9] WORKDIR /app
+#7 CACHED
+
+#8 [streamlit 3/9] COPY requirements.txt ./
+#8 CACHED
+
+#9 [streamlit 4/9] RUN pip install --no-cache-dir -r requirements.txt
+#9 CACHED
+
+#10 [api 5/9] COPY src/ ./src/
+#10 DONE 0.1s
+
+#11 [api 6/9] COPY data/ ./data/
+#11 DONE 0.1s
+
+#11 [streamlit 6/9] COPY data/ ./data/
+#11 DONE 0.1s
+
+#12 [streamlit 7/9] COPY app.py ui_contract.py demo_personas.json pyproject.toml ./
+#12 DONE 0.1s
+
+#13 [api 8/9] COPY tests/ ./tests/
+#13 DONE 0.1s
+
+#13 [streamlit 8/9] COPY tests/ ./tests/
+#13 DONE 0.1s
+
+#14 [streamlit 9/9] RUN useradd --create-home --uid 10001 appuser     && chown -R appuser:appuser /app
+#14 DONE 0.8s
+
+#14 [api 9/9] RUN useradd --create-home --uid 10001 appuser     && chown -R appuser:appuser /app
+#14 DONE 0.8s
+
+#15 [api] exporting to image
+#15 exporting layers
+#15 exporting layers 0.3s done
+#15 exporting manifest sha256:846cd9847f033f724a3e2c62e6d6b80136ef46bf9178812e133d03254e3e560d 0.0s done
+#15 exporting config sha256:b3fa7749d7827fb6d0214c7f54a71b60043f8a5d53b5a6f5b86ce912099a3957 0.0s done
+#15 exporting attestation manifest sha256:f4a125a53f83aa216c7b874ef0b167ebcefbcf1dce7385c84dd59eccb7eddf55 0.1s done
+#15 exporting manifest list sha256:3035fd3730bfcdfebfea0b5eb29b74ee63237371f2b0f115b4a0ab208b69998e
+#15 exporting manifest list sha256:3035fd3730bfcdfebfea0b5eb29b74ee63237371f2b0f115b4a0ab208b69998e 0.0s done
+#15 naming to docker.io/library/hr_step11_20261019-api:latest 0.0s done
+#15 unpacking to docker.io/library/hr_step11_20261019-api:latest
+#15 unpacking to docker.io/library/hr_step11_20261019-api:latest 0.3s done
+#15 DONE 0.9s
+
+#16 [streamlit] exporting to image
+#16 exporting layers 0.3s done
+#16 exporting manifest sha256:7b7a82e4bbb210680f03d76e7720929447314a5ca71c75c19a2dcaa7a6181e82 0.0s done
+#16 exporting config sha256:4699a9851130c02b31dc7270a5d4f66cea860b61e6dddb60b72d6b7e249469b4 0.0s done
+#16 exporting attestation manifest sha256:e2688411bd14c2ba1b0072392eb3da4c4d61c65fb605696f43bdca7c92ee571a 0.1s done
+#16 exporting manifest list sha256:b636b6632c52642f1147a70f1d2bda7e9aa35f51f888cbf953279b260c640177 0.0s done
+#16 naming to docker.io/library/hr_step11_20261019-streamlit:latest done
+#16 unpacking to docker.io/library/hr_step11_20261019-streamlit:latest 0.3s done
+#16 DONE 0.9s
+
+#17 [streamlit] resolving provenance for metadata file
+#17 DONE 0.0s
+
+#18 [api] resolving provenance for metadata file
+#18 DONE 0.0s
+ Image hr_step11_20261019-api Built 
+ Image hr_step11_20261019-streamlit Built 

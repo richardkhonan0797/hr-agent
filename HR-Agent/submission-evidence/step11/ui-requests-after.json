@@ -1,0 +1,16 @@
+{
+  "new_requests": [
+    {
+      "request_id": "LR-92803b740143432187b557dd30914781",
+      "leave_type": "annual",
+      "start_date": "2026-11-16",
+      "end_date": "2026-11-17",
+      "business_days": 2,
+      "status": "pending_manager_review",
+      "created_at": "2026-10-19T08:55:34.037073Z"
+    }
+  ],
+  "stage": "after UI confirmation and replay",
+  "result": "PASS",
+  "count": 3
+}
