@@ -5,7 +5,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from src.agent import AgentService
+from src.agent import AgentService, LEAVE_CLARIFICATION
 from src.cache import NullCache
 from src.config import Settings
 from src.contracts import AuthContext, ChatRequest, LeaveBalance, ModelToolCall, ModelTurn
@@ -77,6 +77,42 @@ def test_tool_pairing_usage_and_auth(repository):
     assert history[2]["type"] == "function_call_output"
     assert json.loads(history[2]["output"])[0]["available_days"] == 8
     assert current_budget.get() is None
+
+
+@pytest.mark.parametrize("message", [
+    "Saya ingin mengajukan cuti tahunan.",
+    "Siapkan cuti tahunan mulai 2026-11-23.",
+    "Saya ingin cuti 2026-11-23 sampai 2026-11-24.",
+])
+def test_missing_leave_details_can_be_clarified_without_writes(repository, message):
+    provider = ScriptedProvider([final_turn(LEAVE_CLARIFICATION)])
+    response = run(make_service(repository, provider), message)
+    assert response.outcome == "answered"
+    assert response.answer == LEAVE_CLARIFICATION
+    assert response.citations == [] and response.tool_calls == []
+    assert response.action_proposal is None
+    assert repository.proposals == {} and repository.tickets == {}
+    assert repository.list_leave_requests(AUTH.employee_id) == []
+    assert repository.get_trace(response.trace_id)["error"] is None
+
+
+@pytest.mark.parametrize("text", [
+    "Saldo Anda 999 hari.",
+    LEAVE_CLARIFICATION + " Cuti Anda sudah disetujui.",
+    LEAVE_CLARIFICATION + " [HR-LEAVE-001]",
+])
+def test_clarification_does_not_allow_ungrounded_claims(repository, text):
+    response = run(make_service(repository, ScriptedProvider([final_turn(text)])))
+    assert response.outcome == "abstained"
+
+
+def test_clarification_does_not_hide_saved_proposal(repository):
+    provider = ScriptedProvider([
+        tool_turn("prepare_leave_request", LEAVE), final_turn(LEAVE_CLARIFICATION),
+    ])
+    response = run(make_service(repository, provider))
+    assert response.outcome == "action_proposed"
+    assert response.action_proposal.proposal_id in response.answer
 
 
 @pytest.mark.parametrize("text,valid", [

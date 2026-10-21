@@ -21,6 +21,13 @@ from .security import stable_safety_id
 from .tools import TOOL_SCHEMAS, PrepareToolArgs, TicketToolArgs, ToolExecutor
 
 
+LEAVE_CLARIFICATION = (
+    "Apa jenis cuti, tanggal mulai, dan tanggal selesai yang ingin Anda ajukan? "
+    "Kirim ulang permintaan lengkap beserta jenis cuti dan kedua tanggal "
+    "dalam format YYYY-MM-DD."
+)
+
+
 SYSTEM_INSTRUCTIONS = """Anda asisten HR Nusantara Digital. Jawab singkat dalam Bahasa Indonesia.
 Untuk pertanyaan kebijakan, gunakan search_hr_policy dan kutip [document_id] dari hasil
 pencarian run ini. Jika bukti tidak ada atau tidak cukup, jangan mengarang jawaban.
@@ -34,7 +41,10 @@ prepare_leave_request hanya menyiapkan proposal yang memerlukan konfirmasi ekspl
 Jangan menyetujui cuti: request setelah konfirmasi selalu pending_manager_review.
 Jangan meminta rincian medis atau menampilkan chain-of-thought. Berikan hasil ringkas saja.
 Jangan mengulangi tool yang menulis data. Jika tidak dapat menjawab dengan bukti, abstain.
-"""
+Setiap pesan diproses mandiri; jangan mengandalkan percakapan sebelumnya.
+Jika pengguna ingin mengajukan cuti tetapi jenis cuti atau tanggal mulai/selesai
+belum jelas, jangan menebak, memanggil tool, atau membuat proposal. Balas persis:
+""" + LEAVE_CLARIFICATION
 
 TOOL_NAMES = {schema["name"] for schema in TOOL_SCHEMAS}
 WRITE_TOOLS = {"prepare_leave_request", "create_hr_ticket"}
@@ -193,6 +203,10 @@ class AgentService:
     def _validate_answer(self, text: str, state: RunState) -> tuple[str, Outcome, list[Citation]]:
         if not text.strip():
             raise ValueError("Empty or incomplete model answer")
+        # Only this fixed, claim-free clarification can bypass tool grounding.
+        # Never hide a tool failure or a saved action behind a clarification.
+        if text.strip() == LEAVE_CLARIFICATION and not state.tool_calls:
+            return LEAVE_CLARIFICATION, Outcome.answered, []
         cited_ids = re.findall(r"\[([^\[\]\n]+)\]", text)
         citations = []
         for document_id in dict.fromkeys(cited_ids):
