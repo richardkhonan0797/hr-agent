@@ -10,6 +10,10 @@ class DomainError(ValueError):
     pass
 
 
+class LeaveOverlapError(DomainError):
+    """The authenticated employee already has leave on these dates."""
+
+
 def business_days(start: date, end: date) -> int:
     # TODO(M2): Validate ordering, exclude weekends, and reject zero business-day ranges.
     
@@ -43,7 +47,7 @@ def validate_leave_request(
         raise DomainError("Tanggal mulai tidak boleh di masa lalu")
     days = business_days(args.start_date, args.end_date)
     if overlaps:
-        raise DomainError("Tanggal cuti bertumpang tindih dengan permintaan aktif")
+        raise LeaveOverlapError("Tanggal cuti bertumpang tindih dengan permintaan aktif")
 
     matching_balance = None
     for balance in balances:

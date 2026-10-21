@@ -13,7 +13,7 @@ from .contracts import (
     ActionProposal, AuthContext, ChatRequest, ChatResponse, Citation, ModelToolCall,
     ModelTurn, Outcome, PolicyChunk, ToolCallSummary, UsageSummary,
 )
-from .domain import DomainError, estimate_cost
+from .domain import DomainError, LeaveOverlapError, estimate_cost
 from .execution import RunBudget, BudgetExceeded, budget_scope, call_with_retry
 from .providers import ModelProvider
 from .repository import Repository
@@ -89,6 +89,13 @@ class AgentService:
                 answer, outcome, citations = self._validate_answer(text, state)
             except BudgetExceeded:
                 error = "execution_budget_exhausted"
+            except LeaveOverlapError:
+                # Render a fixed domain rejection, never raw exception text.
+                answer = (
+                    "Pengajuan cuti ditolak karena tanggal yang Anda pilih bertumpang tindih "
+                    "dengan permintaan cuti aktif Anda. Silakan pilih tanggal lain."
+                )
+                error = "invalid_or_ungrounded_result"
             except (ValidationError, DomainError, ValueError):
                 error = "invalid_or_ungrounded_result"
             except Exception:

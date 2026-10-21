@@ -180,6 +180,36 @@ def test_failed_write_is_not_retried(repository):
     assert response.tool_calls[0].status == "error"
 
 
+def test_overlap_rejection_explains_reason_without_saving_proposal(repository):
+    provider = ScriptedProvider([tool_turn("prepare_leave_request", LEAVE)])
+    service = make_service(repository, provider)
+    repository.has_overlap = Mock(return_value=True)
+    response = run(service, "Siapkan cuti tahunan 2026-11-02 sampai 2026-11-03")
+    assert response.outcome == "abstained"
+    assert "bertumpang tindih" in response.answer
+    assert "pilih tanggal lain" in response.answer
+    assert response.action_proposal is None
+    assert repository.proposals == {}
+    assert repository.list_leave_requests(AUTH.employee_id) == []
+    assert response.tool_calls[0].status == "blocked"
+    assert len(provider.calls) == 1
+    repository.has_overlap.assert_called_once_with(
+        AUTH.employee_id, date(2026, 11, 2), date(2026, 11, 3),
+    )
+
+
+def test_unknown_domain_error_still_hides_exception_text(repository):
+    from src.domain import DomainError
+
+    provider = ScriptedProvider([tool_turn("prepare_leave_request", LEAVE)])
+    service = make_service(repository, provider)
+    repository.has_overlap = Mock(side_effect=DomainError("secret-internal-detail"))
+    response = run(service)
+    assert response.outcome == "abstained"
+    assert "secret-internal-detail" not in response.answer
+    assert "bertumpang tindih" not in response.answer
+
+
 @pytest.mark.parametrize("turn_limit", [2, 8])
 def test_turn_limit(repository, turn_limit):
     provider = ScriptedProvider([tool_turn(call_id=str(i)) for i in range(8)])
