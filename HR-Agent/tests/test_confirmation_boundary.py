@@ -50,6 +50,39 @@ def test_prepare_then_explicit_confirmation_checkpoint(client, repository):
     assert repository.get_balances("EMP-001") == balances
 
 
+@pytest.mark.parametrize("dates", [
+    "10 november sampai 12 november 2026",
+    "10 November 2026 sampai 12 November 2026",
+    "2026-11-10 sampai 2026-11-12",
+])
+def test_shorthand_leave_returns_confirmable_proposal(client, repository, dates):
+    auth = {"Authorization": "Bearer token-alya"}
+    result = client.post("/api/v1/chat", headers=auth, json={
+        "message": f"cuti tahunan, {dates}, menikah",
+    }).json()
+    assert result["outcome"] == "action_proposed"
+    proposal = result["action_proposal"]
+    assert proposal["requires_confirmation"] is True
+    assert (proposal["start_date"], proposal["end_date"]) == ("2026-11-10", "2026-11-12")
+    assert proposal["business_days"] == 3
+    assert proposal["reason"] == "menikah"
+    assert repository.requests == {}
+    confirmed = client.post(f"/api/v1/action-proposals/{proposal['proposal_id']}/confirm",
+                            headers=auth, json={"idempotency_key": "shorthand"})
+    assert confirmed.status_code == 200
+    assert confirmed.json()["status"] == "pending_manager_review"
+
+
+@pytest.mark.parametrize("dates", ["31 november sampai 32 november 2026",
+                                  "10 november sampai 12 november", "besok sampai lusa"])
+def test_shorthand_ambiguous_dates_require_clarification(client, repository, dates):
+    result = client.post("/api/v1/chat", headers={"Authorization": "Bearer token-alya"},
+                         json={"message": f"cuti tahunan, {dates}, menikah"}).json()
+    assert result["action_proposal"] is None
+    assert "tanggal mulai" in result["answer"]
+    assert repository.proposals == repository.requests == {}
+
+
 def test_same_key_competing_proposals_create_only_one_request(repository):
     for identifier in ("P1", "P2"):
         repository.save_proposal("EMP-001", proposal(identifier))

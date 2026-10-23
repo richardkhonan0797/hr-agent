@@ -20,4 +20,3 @@ Status evidence 19 Oktober 2026; lihat `step11-verification.md`.
 - [x] Live evaluation report berisi 15 kasus dan GO.
 - [x] Risk register memiliki owner, mitigation, evidence, dan residual risk; bukan sign-off manusia.
 - [x] Screenshot UI dan monitoring serta output hasil test tersedia pada submission-evidence/step11.
-- [ ] Demo 5–7 menit telah dilatih presenter. **Script 360 detik, walkthrough fungsional, dan backup sudah tersedia; rehearsal stopwatch belum dilakukan.**

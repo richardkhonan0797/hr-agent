@@ -99,6 +99,13 @@ class AgentService:
                          "notice": NOTICE_REFUSAL, "weekend": WEEKEND_REFUSAL}
                 if decision.kind in fixed:
                     answer = fixed[decision.kind]
+                elif decision.kind == "prepare":
+                    self._execute_tool(state, ModelToolCall(
+                        call_id="preflight-prepare", name="prepare_leave_request",
+                        arguments=decision.preparation.model_dump(mode="json"),
+                    ), auth)
+                    answer = self._tool_answer(state)
+                    outcome = Outcome.action_proposed
                 elif decision.kind == "clarify":
                     answer, outcome = clarification(decision), Outcome.answered
                     if decision.requested_days and decision.leave_type:

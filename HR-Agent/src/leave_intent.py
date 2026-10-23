@@ -7,6 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .domain import earliest_annual_start
 from .security import contains_medical_details
+from .contracts import PrepareLeaveArgs
 
 
 APPROVAL_REFUSAL = (
@@ -35,7 +36,8 @@ BALANCE_REFUSAL = (
 
 class LeaveDecision(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
-    kind: Literal["normal", "policy", "medical", "approval", "notice", "weekend", "clarify"]
+    kind: Literal["normal", "policy", "medical", "approval", "notice", "weekend", "clarify", "prepare"]
+    preparation: PrepareLeaveArgs | None = None
     policy_topic: Literal["carryover", "medical_channel"] | None = None
     leave_type: Literal["annual", "sick", "parental"] | None = None
     missing: tuple[Literal["leave_type", "start_date", "end_date"], ...] = ()
@@ -67,6 +69,20 @@ def classify_request(message: str, today: date) -> LeaveDecision:
     leave = bool(re.search(r"\b(?:cuti|leave)\b", text))
     if leave and re.search(r"\b(?:setujui|approve)\b.{0,25}\b(?:cuti|leave)\b", text):
         return LeaveDecision(kind="approval")
+    # A complete comma-separated leave form expresses intent without an action verb.
+    # Anchor the whole message so policy questions do not become proposals.
+    form = re.fullmatch(
+        r"\s*cuti\s+(tahunan|sakit|orang tua)\s*,\s*([^,]+)\s*,\s*(\S[\s\S]*)", message,
+        flags=re.IGNORECASE,
+    )
+    if form:
+        leave_type = {"tahunan": "annual", "sakit": "sick", "orang tua": "parental"}[form[1].casefold()]
+        dates = parse_date_range(form[2].strip().casefold())
+        if dates is None:
+            return LeaveDecision(kind="clarify", leave_type=leave_type,
+                                 missing=("start_date", "end_date"))
+        return LeaveDecision(kind="prepare", leave_type=leave_type, preparation=PrepareLeaveArgs(
+            leave_type=leave_type, start_date=dates[0], end_date=dates[1], reason=form[3].strip()))
     if re.search(r"^(?:how\s+(?:do|can)\s+(?:i|employees)\b|bagaimana\s+(?:cara|prosedur|proses)\b)", text.strip()):
         return LeaveDecision(kind="normal")
     action = re.search(
@@ -123,3 +139,23 @@ def classify_request(message: str, today: date) -> LeaveDecision:
         return LeaveDecision(kind="clarify", leave_type=leave_type,
                              missing=tuple(missing), requested_days=count)
     return LeaveDecision(kind="normal", leave_type=leave_type)
+
+
+def parse_date_range(text: str) -> tuple[date, date] | None:
+    """Parse explicit ISO or Indonesian ranges; never infer a missing year."""
+    iso = re.fullmatch(r"(\d{4}-\d{2}-\d{2})\s*(?:sampai|hingga|s/d|–|-)\s*(\d{4}-\d{2}-\d{2})", text)
+    months = {name: index for index, name in enumerate(
+        ("januari", "februari", "maret", "april", "mei", "juni", "juli", "agustus",
+         "september", "oktober", "november", "desember"), 1)}
+    named = re.fullmatch(
+        r"(\d{1,2})\s+(\w+)(?:\s+(\d{4}))?\s*(?:sampai|hingga|s/d|–|-)\s*"
+        r"(\d{1,2})\s+(\w+)\s+(\d{4})", text)
+    try:
+        if iso:
+            return date.fromisoformat(iso[1]), date.fromisoformat(iso[2])
+        if named:
+            return (date(int(named[3] or named[6]), months[named[2]], int(named[1])),
+                    date(int(named[6]), months[named[5]], int(named[4])))
+    except (ValueError, KeyError):
+        return None
+    return None
