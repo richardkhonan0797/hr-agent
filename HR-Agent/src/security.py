@@ -3,6 +3,28 @@ from __future__ import annotations
 import hashlib
 import re
 
+from .domain import MedicalDetailsError
+
+
+# Deliberately conservative, finite recognition, not a general medical classifier.
+# Keep this check at storage boundaries as well as the chat entry point.
+MEDICAL_DISCLOSURE = re.compile(
+    r"\b(?:diagnosis|diagnosa)\b\s*(?::|=|saya\b|aku\b|is\b)|"
+    r"\b(?:diagnosed\s+with|didiagnosis|my\s+diagnosis)\b|"
+    r"\b(?:rincian\s+medis|medical\s+details?)\s*[:=]|"
+    r"\b(?:diabetes|hiv|kanker|cancer|tuberkulosis|tuberculosis)\b",
+    re.IGNORECASE,
+)
+
+
+def contains_medical_details(value: str | None) -> bool:
+    return bool(value and MEDICAL_DISCLOSURE.search(value))
+
+
+def reject_medical_details(value: str | None) -> None:
+    if contains_medical_details(value):
+        raise MedicalDetailsError("Medical details require the approved HR channel")
+
 
 def token_hash(token: str) -> str:
     # TODO(M2): Return a deterministic SHA-256 hex digest; never store the raw token.
@@ -28,6 +50,8 @@ def redact(value: str) -> str:
         value,
         flags=re.IGNORECASE,
     )
+    if contains_medical_details(value):
+        return "[MEDICAL REDACTED]"
     value = re.sub(r"[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}", "[EMAIL REDACTED]", value)
     # Allow spacing after the country code, but do not join separate lines.
     value = re.sub(

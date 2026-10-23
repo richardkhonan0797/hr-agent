@@ -18,7 +18,7 @@ DETAILS = {
     403: "Anda tidak memiliki izin untuk mengakses sumber daya ini.",
     404: "Sumber daya tidak ditemukan.",
     405: "Metode HTTP tidak didukung untuk endpoint ini.",
-    409: "Proposal sudah dikonfirmasi, kedaluwarsa, atau idempotency key sudah digunakan.",
+    409: "Proposal sudah dikonfirmasi, kedaluwarsa, tidak lagi memenuhi aturan cuti, atau idempotency key sudah digunakan.",
     422: "Data permintaan tidak sesuai kontrak API.",
     429: "Batas percakapan demo bersama tercapai. Coba lagi setelah waktu tunggu.",
     500: "Terjadi kesalahan internal saat memproses permintaan.",

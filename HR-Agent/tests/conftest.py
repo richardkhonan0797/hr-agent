@@ -9,7 +9,7 @@ from src.agent import AgentService
 from src.api import create_app
 from src.cache import NullCache
 from src.config import Settings
-from src.contracts import PolicyChunk
+from src.contracts import PolicyChunk, LeaveBalance
 from src.providers import DeterministicProvider
 from src.repository import MemoryRepository
 from src.retrieval import RetrievalService
@@ -28,7 +28,13 @@ def settings() -> Settings:
 
 @pytest.fixture
 def repository() -> MemoryRepository:
-    repo = MemoryRepository()
+    repo = MemoryRepository(today_factory=lambda: date(2026, 9, 23))
+    # Confirmation now revalidates current balances rather than trusting proposals.
+    repo.balances = {
+        employee: [LeaveBalance(leave_type="annual", available_days=days,
+                               as_of_date=date(2026, 9, 23))]
+        for employee, days in (("EMP-001", 8), ("EMP-002", 3))
+    }
     repo.chunks = [
         PolicyChunk(
             chunk_id="chunk-annual",

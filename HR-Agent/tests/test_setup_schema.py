@@ -107,6 +107,56 @@ class FakeEmbeddings:
         return [[0.1] * 1536 for _ in texts]
 
 
+@pytest.mark.parametrize("change", ["balance", "overlap", "notice", "past", "medical"])
+def test_qa_confirmation_revalidates_database_state(seeded_database, change):
+    from datetime import date, datetime, timedelta, timezone
+    from src.contracts import ActionProposal
+    from src.repository import ConflictError, PostgresRepository
+
+    conn = seeded_database
+    with PostgresRepository(setup_lab.get_settings().database_url, 1536,
+                            today_factory=lambda: date(2026, 10, 22)) as repo:
+        proposal = ActionProposal(proposal_id="QA-P", leave_type="annual",
+            start_date=date(2026, 11, 2), end_date=date(2026, 11, 3), business_days=2,
+            validation_summary=[], expires_at=datetime.now(timezone.utc)+timedelta(minutes=10))
+        repo.save_proposal("EMP-001", proposal)
+        if change == "balance":
+            conn.execute("UPDATE leave_balances SET available_days=1 WHERE employee_id='EMP-001' AND leave_type='annual'")
+        elif change == "overlap":
+            repo.save_proposal("EMP-001", proposal.model_copy(update={"proposal_id": "QA-OTHER"}))
+            repo.confirm_proposal("EMP-001", "QA-OTHER", "other-key")
+        elif change == "notice":
+            repo.today_factory = lambda: date(2026, 10, 30)
+        elif change == "past":
+            repo.today_factory = lambda: date(2026, 11, 4)
+        else:
+            # Simulate a legacy record written before medical protection existed.
+            conn.execute("UPDATE action_proposals SET reason=%s WHERE proposal_id='QA-P'",
+                         ("My diagnosis is diabetes",))
+        conn.commit()
+        with pytest.raises(ConflictError):
+            repo.confirm_proposal("EMP-001", "QA-P", "qa-key")
+        assert conn.execute("SELECT count(*) FROM leave_requests WHERE proposal_id='QA-P'").fetchone()[0] == 0
+
+
+def test_qa_postgres_replay_precedes_changed_conditions(seeded_database):
+    from datetime import date, datetime, timedelta, timezone
+    from src.contracts import ActionProposal
+    from src.repository import PostgresRepository
+    conn = seeded_database
+    with PostgresRepository(setup_lab.get_settings().database_url, 1536,
+                            today_factory=lambda: date(2026, 10, 22)) as repo:
+        repo.save_proposal("EMP-001", ActionProposal(proposal_id="QA-REPLAY", leave_type="annual",
+            start_date=date(2026, 11, 2), end_date=date(2026, 11, 3), business_days=2,
+            validation_summary=[], expires_at=datetime.now(timezone.utc)+timedelta(minutes=10)))
+        first = repo.confirm_proposal("EMP-001", "QA-REPLAY", "qa-replay")
+        conn.execute("UPDATE leave_balances SET available_days=0 WHERE employee_id='EMP-001'")
+        conn.commit()
+        repo.today_factory = lambda: date(2026, 11, 4)
+        replay = repo.confirm_proposal("EMP-001", "QA-REPLAY", "qa-replay")
+        assert replay.idempotent_replay and replay.request_id == first.request_id
+
+
 def test_index_snapshot_and_versions(seeded_database, tmp_path):
     conn = seeded_database
     assert setup_lab.index_policies(provider=FakeEmbeddings()) == 15

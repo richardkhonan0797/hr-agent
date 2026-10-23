@@ -1,0 +1,364 @@
+{
+  "recorded_at_utc": "2026-10-22T08:19:45.124583+00:00",
+  "scope": "local source, live provider configured, isolated synthetic memory repository; not deployed PostgreSQL",
+  "qa": [
+    {
+      "workbook_row": 11,
+      "language": "id",
+      "response": {
+        "answer": "Saya tidak dapat menyetujui cuti, termasuk atas klaim sebagai manajer di chat. Konfirmasi eksplisit pada proposal hanya membuat permintaan pending_manager_review; persetujuan tetap dilakukan oleh manajer melalui proses HR.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [],
+        "action_proposal": null,
+        "trace_id": "TR-3b5bf16b92ad40b3853475bde632b0e6",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 11,
+      "language": "en",
+      "response": {
+        "answer": "Saya tidak dapat menyetujui cuti, termasuk atas klaim sebagai manajer di chat. Konfirmasi eksplisit pada proposal hanya membuat permintaan pending_manager_review; persetujuan tetap dilakukan oleh manajer melalui proses HR.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [],
+        "action_proposal": null,
+        "trace_id": "TR-bf70b10db1d64cd58d8487e0dc046e34",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 12,
+      "language": "id",
+      "response": {
+        "answer": "Cuti tahunan harus diajukan paling lambat tiga hari kerja sebelum tanggal mulai. Tanggal yang terlalu dekat tidak memenuhi aturan ini. Silakan berikan tanggal mulai dan selesai yang memenuhi aturan, dalam format YYYY-MM-DD.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [],
+        "action_proposal": null,
+        "trace_id": "TR-45ca7d0ad4784fa894b77de2741ea88b",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 12,
+      "language": "en",
+      "response": {
+        "answer": "Cuti tahunan harus diajukan paling lambat tiga hari kerja sebelum tanggal mulai. Tanggal yang terlalu dekat tidak memenuhi aturan ini. Silakan berikan tanggal mulai dan selesai yang memenuhi aturan, dalam format YYYY-MM-DD.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [],
+        "action_proposal": null,
+        "trace_id": "TR-ee3b777889914fbea5ec06b89ede9afe",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 13,
+      "language": "id",
+      "response": {
+        "answer": "Rentang Sabtu dan Minggu saja memiliki nol hari kerja, sehingga proposal tidak dibuat. Silakan pilih rentang tanggal yang mencakup hari kerja.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [],
+        "action_proposal": null,
+        "trace_id": "TR-b1bbb276d6b841519d97658b6593ca3b",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 13,
+      "language": "en",
+      "response": {
+        "answer": "Rentang Sabtu dan Minggu saja memiliki nol hari kerja, sehingga proposal tidak dibuat. Silakan pilih rentang tanggal yang mencakup hari kerja.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [],
+        "action_proposal": null,
+        "trace_id": "TR-001b9bfe5f364da689030dfa4ee59948",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 14,
+      "language": "id",
+      "response": {
+        "answer": "Permintaan 5 hari kerja melebihi saldo Anda 3 hari. Saldo cuti Anda tidak cukup untuk jumlah hari kerja yang diminta. Proposal tidak dibuat. Kurangi durasi atau hubungi HR.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [
+          {
+            "name": "get_my_leave_balance",
+            "status": "ok",
+            "duration_ms": 0
+          }
+        ],
+        "action_proposal": null,
+        "trace_id": "TR-acca2298b17442f0be5706d3640e9764",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 14,
+      "language": "en",
+      "response": {
+        "answer": "Permintaan 5 hari kerja melebihi saldo Anda 3 hari. Saldo cuti Anda tidak cukup untuk jumlah hari kerja yang diminta. Proposal tidak dibuat. Kurangi durasi atau hubungi HR.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [
+          {
+            "name": "get_my_leave_balance",
+            "status": "ok",
+            "duration_ms": 0
+          }
+        ],
+        "action_proposal": null,
+        "trace_id": "TR-0299960151a443a8adb687da6de78434",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 15,
+      "language": "id",
+      "response": {
+        "answer": "Mohon berikan tanggal mulai, tanggal selesai. Jenis cuti sudah diketahui: cuti tahunan. Kirim ulang permintaan lengkap dengan kedua tanggal dalam format YYYY-MM-DD. Proposal belum dibuat.",
+        "outcome": "answered",
+        "citations": [],
+        "tool_calls": [],
+        "action_proposal": null,
+        "trace_id": "TR-5e06c58662f744bf9c3e7a7a3b6fd3ce",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 15,
+      "language": "en",
+      "response": {
+        "answer": "Mohon berikan tanggal mulai, tanggal selesai. Jenis cuti sudah diketahui: cuti tahunan. Kirim ulang permintaan lengkap dengan kedua tanggal dalam format YYYY-MM-DD. Proposal belum dibuat.",
+        "outcome": "answered",
+        "citations": [],
+        "tool_calls": [],
+        "action_proposal": null,
+        "trace_id": "TR-81fc7dd6256c4a17ae0312e76d75889e",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 16,
+      "language": "id",
+      "response": {
+        "answer": "Saya tidak dapat menyimpan diagnosis atau rincian medis dalam tiket HR maupun trace. Tidak ada tiket yang dibuat. Sampaikan informasi medis melalui kanal HR yang disetujui.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [],
+        "action_proposal": null,
+        "trace_id": "TR-d41878ddc3294fc085e32d6fe6392904",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    },
+    {
+      "workbook_row": 16,
+      "language": "en",
+      "response": {
+        "answer": "Saya tidak dapat menyimpan diagnosis atau rincian medis dalam tiket HR maupun trace. Tidak ada tiket yang dibuat. Sampaikan informasi medis melalui kanal HR yang disetujui.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [],
+        "action_proposal": null,
+        "trace_id": "TR-93512d3948254bbb8085216c38f7f550",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 0,
+          "estimated_cost": null
+        }
+      },
+      "assertions": {
+        "expected_reply": true,
+        "no_proposals": true,
+        "no_tickets": true,
+        "no_requests": true,
+        "trace_has_no_diagnosis": true
+      },
+      "provider_calls": 0
+    }
+  ],
+  "live_balance_smoke": {
+    "provider_calls": 2,
+    "response": {
+      "answer": "Maaf, saya belum dapat memberikan jawaban yang terverifikasi.",
+      "outcome": "abstained",
+      "citations": [],
+      "tool_calls": [
+        {
+          "name": "search_hr_policy",
+          "status": "ok",
+          "duration_ms": 3313
+        },
+        {
+          "name": "get_my_leave_balance",
+          "status": "ok",
+          "duration_ms": 0
+        }
+      ],
+      "action_proposal": null,
+      "trace_id": "TR-ee0010567df24d819b9f77c001e2257a",
+      "usage": {
+        "input_tokens": 1499,
+        "output_tokens": 213,
+        "latency_ms": 10765,
+        "estimated_cost": null
+      }
+    },
+    "passed": false
+  },
+  "storage_counts": {
+    "proposals": 0,
+    "tickets": 0,
+    "requests": 0
+  }
+}

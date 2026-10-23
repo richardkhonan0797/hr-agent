@@ -1,7 +1,7 @@
 """Deterministic leave-domain rules; this module must never call the model."""
 from __future__ import annotations
 
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from .contracts import LeaveBalance, PrepareLeaveArgs
 
@@ -12,6 +12,39 @@ class DomainError(ValueError):
 
 class LeaveOverlapError(DomainError):
     """The authenticated employee already has leave on these dates."""
+
+
+class InsufficientNoticeError(DomainError):
+    pass
+
+
+class ZeroWorkingDaysError(DomainError):
+    pass
+
+
+class InsufficientBalanceError(DomainError):
+    pass
+
+
+class MedicalDetailsError(DomainError):
+    pass
+
+
+JAKARTA = timezone(timedelta(hours=7))
+
+
+def jakarta_today() -> date:
+    return datetime.now(JAKARTA).date()
+
+
+def earliest_annual_start(today: date) -> date:
+    current = today
+    remaining = 3
+    while remaining:
+        current += timedelta(days=1)
+        if current.weekday() < 5:
+            remaining -= 1
+    return current
 
 
 def business_days(start: date, end: date) -> int:
@@ -31,7 +64,7 @@ def business_days(start: date, end: date) -> int:
             break
         current += timedelta(days=1)
     if days == 0:
-        raise DomainError("Rentang tanggal harus mencakup hari kerja")
+        raise ZeroWorkingDaysError("Rentang tanggal harus mencakup hari kerja")
     return days
 
 
@@ -57,7 +90,9 @@ def validate_leave_request(
     if matching_balance is None:
         raise DomainError("Saldo untuk tipe cuti ini tidak tersedia")
     if matching_balance.available_days < days:
-        raise DomainError("Saldo cuti tidak cukup")
+        raise InsufficientBalanceError("Saldo cuti tidak cukup")
+    if args.leave_type == "annual" and args.start_date < earliest_annual_start(today):
+        raise InsufficientNoticeError("Cuti tahunan memerlukan pemberitahuan tiga hari kerja")
 
     return days, [
         "Tanggal dan hari kerja valid",

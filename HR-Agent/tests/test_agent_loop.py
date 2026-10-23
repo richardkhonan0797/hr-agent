@@ -5,7 +5,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from src.agent import AgentService, LEAVE_CLARIFICATION
+from src.agent import AgentService
 from src.cache import NullCache
 from src.config import Settings
 from src.contracts import AuthContext, ChatRequest, LeaveBalance, ModelToolCall, ModelTurn
@@ -22,6 +22,7 @@ SEARCH = {"query": "cuti tahunan", "top_k": 3}
 LEAVE = {"start_date": "2026-11-02", "end_date": "2026-11-03",
          "leave_type": "annual", "reason": None}
 TICKET = {"category": "privacy", "summary": "Please clarify policy"}
+LEAVE_CLARIFICATION = "Apa jenis cuti, tanggal mulai, dan tanggal selesai yang ingin Anda ajukan?"
 
 
 def tool_turn(name="get_my_leave_balance", arguments=None, call_id="call-1", tokens=10):
@@ -79,16 +80,17 @@ def test_tool_pairing_usage_and_auth(repository):
     assert current_budget.get() is None
 
 
-@pytest.mark.parametrize("message", [
-    "Saya ingin mengajukan cuti tahunan.",
-    "Siapkan cuti tahunan mulai 2026-11-23.",
-    "Saya ingin cuti 2026-11-23 sampai 2026-11-24.",
+@pytest.mark.parametrize("message,missing", [
+    ("Saya ingin mengajukan cuti tahunan.", "Mohon berikan tanggal mulai, tanggal selesai."),
+    ("Siapkan cuti tahunan mulai 2026-11-23.", "Mohon berikan tanggal selesai."),
+    ("Saya ingin cuti 2026-11-23 sampai 2026-11-24.", "Mohon berikan jenis cuti."),
 ])
-def test_missing_leave_details_can_be_clarified_without_writes(repository, message):
+def test_missing_leave_details_can_be_clarified_without_writes(repository, message, missing):
     provider = ScriptedProvider([final_turn(LEAVE_CLARIFICATION)])
     response = run(make_service(repository, provider), message)
     assert response.outcome == "answered"
-    assert response.answer == LEAVE_CLARIFICATION
+    assert response.answer.startswith(missing)
+    assert provider.calls == []
     assert response.citations == [] and response.tool_calls == []
     assert response.action_proposal is None
     assert repository.proposals == {} and repository.tickets == {}

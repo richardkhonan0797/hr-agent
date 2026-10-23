@@ -12,7 +12,8 @@ from .config import Settings
 from .contracts import (
     ActionProposal, AuthContext, PrepareLeaveArgs, SearchPolicyArgs, TicketArgs,
 )
-from .domain import validate_leave_request
+from .domain import jakarta_today, validate_leave_request
+from .security import reject_medical_details
 from .repository import Repository
 from .retrieval import RetrievalService
 
@@ -61,7 +62,7 @@ class ToolExecutor:
         self.repository = repository
         self.retrieval = retrieval
         self.settings = settings
-        self.today_factory = today_factory or date.today
+        self.today_factory = today_factory or jakarta_today
 
     def execute(self, name: str, arguments: dict[str, Any], auth: AuthContext) -> tuple[Any, ActionProposal | None]:
         # TODO(M2): Validate arguments with Pydantic and bind all private-data tools to auth.employee_id.
@@ -90,6 +91,7 @@ class ToolExecutor:
 
     def _prepare_leave(self, arguments: dict[str, Any], auth: AuthContext) -> ActionProposal:
         args = PrepareToolArgs.model_validate(arguments)
+        reject_medical_details(args.reason)
         balances = self.repository.get_balances(auth.employee_id)
         overlaps = self.repository.has_overlap(auth.employee_id, args.start_date, args.end_date)
         days, summary = validate_leave_request(args, balances, overlaps, self.today_factory())
@@ -110,6 +112,7 @@ class ToolExecutor:
 
     def _create_ticket(self, arguments: dict[str, Any], auth: AuthContext) -> dict[str, str]:
         args = TicketToolArgs.model_validate(arguments)
+        reject_medical_details(args.summary)
         ticket_id = self.repository.create_ticket(auth.employee_id, args.category, args.summary)
         return {"ticket_id": ticket_id}
 

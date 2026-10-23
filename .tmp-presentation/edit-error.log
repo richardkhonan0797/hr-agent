@@ -1,0 +1,16 @@
+node:internal/fs/promises:1774
+  return await PromisePrototypeThen(
+         ^
+
+Error: EPERM: operation not permitted, link 'D:\Richard\Documents\code\hacktiv8\hr-agent-milestone2\HR-Agent\presentation\.hr-assistant-presentation-qa-improvements.pptx.88edc48c-9afe-470a-b3af-7af248d7c8de.validated' -> 'D:\Richard\Documents\code\hacktiv8\hr-agent-milestone2\HR-Agent\presentation\hr-assistant-presentation-qa-improvements.pptx'
+    at async Object.link (node:internal/fs/promises:1774:10)
+    at async finalizePresentation (file:///C:/Users/ricat/.codex/plugins/cache/openai-primary-runtime/presentations/26.1022.11436/skills/presentations/container_tools/artifact_tool_utils.mjs:1018:5)
+    at async file:///D:/Richard/Documents/code/hacktiv8/hr-agent-milestone2/.tmp-presentation/edit.mjs:14:14 {
+  errno: -4048,
+  code: 'EPERM',
+  syscall: 'link',
+  path: 'D:\\Richard\\Documents\\code\\hacktiv8\\hr-agent-milestone2\\HR-Agent\\presentation\\.hr-assistant-presentation-qa-improvements.pptx.88edc48c-9afe-470a-b3af-7af248d7c8de.validated',
+  dest: 'D:\\Richard\\Documents\\code\\hacktiv8\\hr-agent-milestone2\\HR-Agent\\presentation\\hr-assistant-presentation-qa-improvements.pptx'
+}
+
+Node.js v24.22.1

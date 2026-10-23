@@ -1,0 +1,106 @@
+{
+  "recorded_at": "2026-10-22T12:43:12.529480+00:00",
+  "scope": "Live provider, local policy files, synthetic memory repository; not deployed PostgreSQL",
+  "results": [
+    {
+      "prompt": "Saya ingin membawa 8 hari cuti ke tahun depan. Bisa?",
+      "response": {
+        "answer": "Maaf, saya belum dapat memberikan jawaban yang terverifikasi.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [
+          {
+            "name": "search_hr_policy",
+            "status": "ok",
+            "duration_ms": 2407
+          }
+        ],
+        "action_proposal": null,
+        "trace_id": "TR-9e76cbb7b69e47899c2b5df7bbc35665",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 2984,
+          "estimated_cost": null
+        }
+      },
+      "expected_document": "HR-LEAVE-001",
+      "no_action_writes": true
+    },
+    {
+      "prompt": "I want to carry over 8 days of leave to next year. Can I?",
+      "response": {
+        "answer": "Maaf, saya belum dapat memberikan jawaban yang terverifikasi.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [
+          {
+            "name": "search_hr_policy",
+            "status": "ok",
+            "duration_ms": 312
+          }
+        ],
+        "action_proposal": null,
+        "trace_id": "TR-672b5671e7244723accc455d2d6db0c4",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 672,
+          "estimated_cost": null
+        }
+      },
+      "expected_document": "HR-LEAVE-001",
+      "no_action_writes": true
+    },
+    {
+      "prompt": "Saya sakit tiga hari. Boleh saya kirim diagnosis di chat ini?",
+      "response": {
+        "answer": "Maaf, saya belum dapat memberikan jawaban yang terverifikasi.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [
+          {
+            "name": "search_hr_policy",
+            "status": "ok",
+            "duration_ms": 640
+          }
+        ],
+        "action_proposal": null,
+        "trace_id": "TR-e4828276381e47aaba5be2980f904797",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 1000,
+          "estimated_cost": null
+        }
+      },
+      "expected_document": "HR-LEAVE-002",
+      "no_action_writes": true
+    },
+    {
+      "prompt": "I have been sick for three days. Can I send a diagnosis in this chat?",
+      "response": {
+        "answer": "Maaf, saya belum dapat memberikan jawaban yang terverifikasi.",
+        "outcome": "abstained",
+        "citations": [],
+        "tool_calls": [
+          {
+            "name": "search_hr_policy",
+            "status": "ok",
+            "duration_ms": 327
+          }
+        ],
+        "action_proposal": null,
+        "trace_id": "TR-967290ff3b2f420ea27dd86d4f8e3c51",
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "latency_ms": 781,
+          "estimated_cost": null
+        }
+      },
+      "expected_document": "HR-LEAVE-002",
+      "no_action_writes": true
+    }
+  ]
+}

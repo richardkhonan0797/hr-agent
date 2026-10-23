@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from datetime import date, datetime, timezone
 from contextlib import contextmanager
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from copy import deepcopy
 import json
 import math
@@ -22,10 +22,12 @@ from .providers import validate_embeddings
 from .search_text import deterministic_embedding, query_terms
 from .execution import check_deadline, current_budget, remaining_timeout
 from .telemetry import safe_trace
-from .security import token_hash
+from .security import token_hash, reject_medical_details
+from .domain import JAKARTA, DomainError, jakarta_today, validate_leave_request
+from pydantic import ValidationError
 from .monitoring import summarize_traces
 
-from .contracts import ActionProposal, ActionResult, AuthContext, LeaveBalance, LeaveRequestView, PolicyChunk
+from .contracts import ActionProposal, ActionResult, AuthContext, LeaveBalance, LeaveRequestView, PolicyChunk, PrepareLeaveArgs
 
 
 class Repository(Protocol):
@@ -50,8 +52,22 @@ class ConflictError(RuntimeError):
     pass
 
 
+def validate_confirmation(proposal: ActionProposal, balances: list[LeaveBalance],
+                          overlaps: bool, today: date) -> None:
+    try:
+        reject_medical_details(proposal.reason)
+        args = PrepareLeaveArgs(start_date=proposal.start_date, end_date=proposal.end_date,
+                                leave_type=proposal.leave_type, reason=proposal.reason)
+        days, _ = validate_leave_request(args, balances, overlaps, today)
+        if days != proposal.business_days:
+            raise DomainError("Working-day count changed")
+    except (DomainError, ValidationError) as error:
+        raise ConflictError("Proposal no longer valid; prepare a new proposal") from error
+
+
 class MemoryRepository:
-    def __init__(self) -> None:
+    def __init__(self, *, today_factory: Callable[[], date] | None = None) -> None:
+        self.today_factory = today_factory or jakarta_today
         self.chunks: list[PolicyChunk] = []
         self.balances: dict[str, list[LeaveBalance]] = {}
         self.proposals: dict[str, tuple[str, ActionProposal]] = {}
@@ -96,6 +112,9 @@ class MemoryRepository:
             proposal = stored[1]
             if proposal.expires_at <= datetime.now(timezone.utc):
                 raise ConflictError("Proposal expired")
+            validate_confirmation(proposal, self.get_balances(employee_id),
+                                  self.has_overlap(employee_id, proposal.start_date, proposal.end_date),
+                                  self.today_factory())
             return self._store_pending_request(employee_id, proposal, idempotency_key)
 
     def _confirmation_replay(self, employee_id: str, proposal_id: str,
@@ -156,11 +175,13 @@ class MemoryRepository:
         return False
 
     def save_proposal(self, employee_id: str, proposal: ActionProposal) -> None:
+        reject_medical_details(proposal.reason)
         if proposal.proposal_id in self.proposals:
             raise ConflictError("Proposal already exists")
         self.proposals[proposal.proposal_id] = (employee_id, proposal.model_copy(deep=True))
 
     def create_ticket(self, employee_id: str, category: str, summary: str) -> str:
+        reject_medical_details(summary)
         ticket_id = "HR-" + uuid4().hex
         self.tickets[ticket_id] = {
             "employee_id": employee_id, "category": category, "summary": summary,
@@ -195,7 +216,9 @@ class MemoryRepository:
 
 class PostgresRepository:
     def __init__(self, database_url: str, embedding_dimensions: int,
-                 *, policy_index_version: str | None = None) -> None:
+                 *, policy_index_version: str | None = None,
+                 today_factory: Callable[[], date] | None = None) -> None:
+        self.today_factory = today_factory
         if embedding_dimensions < 1:
             raise ValueError("Embedding dimensions must be positive")
         self.embedding_dimensions = embedding_dimensions
@@ -283,6 +306,20 @@ class PostgresRepository:
                 now = connection.execute("SELECT clock_timestamp() AS now").fetchone()["now"]
                 if proposal["expires_at"] <= now:
                     raise ConflictError("Proposal expired")
+                balances = connection.execute("""
+                    SELECT leave_type, available_days, as_of_date FROM leave_balances
+                    WHERE employee_id = %s FOR UPDATE
+                """, (employee_id,)).fetchall()
+                overlaps = connection.execute("""
+                    SELECT EXISTS(SELECT 1 FROM leave_requests WHERE employee_id = %s
+                        AND status IN ('pending_manager_review', 'approved')
+                        AND start_date <= %s AND end_date >= %s) AS overlaps
+                """, (employee_id, proposal["end_date"], proposal["start_date"])).fetchone()["overlaps"]
+                validate_confirmation(
+                    ActionProposal.model_validate(proposal),
+                    [LeaveBalance.model_validate(row) for row in balances], overlaps,
+                    self.today_factory() if self.today_factory else now.astimezone(JAKARTA).date(),
+                )
                 return self._insert_pending_request(connection, employee_id, proposal, idempotency_key)
 
     def _confirmation_replay(self, connection: Connection, employee_id: str,
@@ -416,6 +453,7 @@ class PostgresRepository:
         return row["overlaps"]
 
     def save_proposal(self, employee_id: str, proposal: ActionProposal) -> None:
+        reject_medical_details(proposal.reason)
         with self._connection() as connection:
             with connection.transaction():
                 connection.execute("""
@@ -431,6 +469,7 @@ class PostgresRepository:
                 ))
 
     def create_ticket(self, employee_id: str, category: str, summary: str) -> str:
+        reject_medical_details(summary)
         ticket_id = "HR-" + uuid4().hex
         with self._connection() as connection:
             with connection.transaction():

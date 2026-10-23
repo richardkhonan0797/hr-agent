@@ -1,5 +1,7 @@
 # Milestone P2M2 — Asisten Kebijakan HR dan Cuti
 
+**Quick commands (English, PowerShell):** [Start the app, run tests, and evaluate](COMMANDS.md).
+
 Cloud demo deployment: [Render + Neon guide](render-neon.md), using the repository-root
 `render.yaml`. The local Docker Compose workflow below remains unchanged.
 

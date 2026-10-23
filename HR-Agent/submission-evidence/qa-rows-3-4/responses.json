@@ -1,0 +1,134 @@
+{
+  "recorded_at": "2026-10-22T12:43:51.225461+00:00",
+  "scope": "Live provider, local policy files, synthetic memory repository; not deployed PostgreSQL",
+  "results": [
+    {
+      "prompt": "Saya ingin membawa 8 hari cuti ke tahun depan. Bisa?",
+      "response": {
+        "answer": "Bisa untuk **maksimal 5 hari** dan harus digunakan sebelum **31 Maret** tahun berikutnya. Membawa **8 hari** memerlukan pengecualian melalui tiket HR dan persetujuan manusia. [HR-LEAVE-001]",
+        "outcome": "answered",
+        "citations": [
+          {
+            "document_id": "HR-LEAVE-001",
+            "title": "Kebijakan Cuti Tahunan",
+            "section": "Sisa cuti",
+            "excerpt": "Maksimal lima hari cuti dapat dibawa ke tahun berikutnya dan harus digunakan sebelum 31 Maret. Pengecualian memerlukan tiket HR dan persetujuan manusia."
+          }
+        ],
+        "tool_calls": [
+          {
+            "name": "search_hr_policy",
+            "status": "ok",
+            "duration_ms": 1532
+          }
+        ],
+        "action_proposal": null,
+        "trace_id": "TR-d5239a8d6a2e405f92e64cd82cc362fb",
+        "usage": {
+          "input_tokens": 1310,
+          "output_tokens": 56,
+          "latency_ms": 3875,
+          "estimated_cost": null
+        }
+      },
+      "expected_document": "HR-LEAVE-001",
+      "no_action_writes": true
+    },
+    {
+      "prompt": "I want to carry over 8 days of leave to next year. Can I?",
+      "response": {
+        "answer": "Maksimal **5 hari** cuti dapat dibawa ke tahun berikutnya dan harus digunakan sebelum **31 Maret**. Jadi, **8 hari tidak dapat dibawa seluruhnya** tanpa pengecualian. Pengecualian memerlukan tiket HR dan persetujuan manusia. **[HR-LEAVE-001]**",
+        "outcome": "answered",
+        "citations": [
+          {
+            "document_id": "HR-LEAVE-001",
+            "title": "Kebijakan Cuti Tahunan",
+            "section": "Sisa cuti",
+            "excerpt": "Maksimal lima hari cuti dapat dibawa ke tahun berikutnya dan harus digunakan sebelum 31 Maret. Pengecualian memerlukan tiket HR dan persetujuan manusia."
+          }
+        ],
+        "tool_calls": [
+          {
+            "name": "search_hr_policy",
+            "status": "ok",
+            "duration_ms": 250
+          }
+        ],
+        "action_proposal": null,
+        "trace_id": "TR-67ca3faa87de437e9677a2aa8ef9f177",
+        "usage": {
+          "input_tokens": 1313,
+          "output_tokens": 73,
+          "latency_ms": 2454,
+          "estimated_cost": null
+        }
+      },
+      "expected_document": "HR-LEAVE-001",
+      "no_action_writes": true
+    },
+    {
+      "prompt": "Saya sakit tiga hari. Boleh saya kirim diagnosis di chat ini?",
+      "response": {
+        "answer": "Jangan kirim diagnosis di chat ini. Untuk cuti sakit lebih dari dua hari kerja berturut-turut, dokumen pendukung harus diserahkan melalui sistem HR, bukan percakapan asisten. Informasi medis rinci hanya boleh disampaikan melalui kanal HR resmi kepada petugas berwenang [HR-LEAVE-002].",
+        "outcome": "answered",
+        "citations": [
+          {
+            "document_id": "HR-LEAVE-002",
+            "title": "Kebijakan Cuti Sakit",
+            "section": "Pemberitahuan",
+            "excerpt": "Pegawai harus memberi tahu manajer sesegera mungkin. Cuti sakit lebih dari dua hari kerja berturut-turut memerlukan dokumen pendukung yang diserahkan langsung melalui sistem HR, bukan melalui percakapan asisten."
+          }
+        ],
+        "tool_calls": [
+          {
+            "name": "search_hr_policy",
+            "status": "ok",
+            "duration_ms": 217
+          }
+        ],
+        "action_proposal": null,
+        "trace_id": "TR-09a108aeeed34d0a9df12bb79a255796",
+        "usage": {
+          "input_tokens": 1297,
+          "output_tokens": 73,
+          "latency_ms": 2702,
+          "estimated_cost": null
+        }
+      },
+      "expected_document": "HR-LEAVE-002",
+      "no_action_writes": true
+    },
+    {
+      "prompt": "I have been sick for three days. Can I send a diagnosis in this chat?",
+      "response": {
+        "answer": "Jangan kirim diagnosis di chat ini. Untuk sakit lebih dari **dua hari kerja berturut-turut**, dokumen pendukung harus diserahkan melalui **sistem HR**, bukan percakapan asisten. Informasi medis rinci hanya boleh disampaikan melalui kanal HR resmi kepada petugas berwenang. [HR-LEAVE-002]",
+        "outcome": "answered",
+        "citations": [
+          {
+            "document_id": "HR-LEAVE-002",
+            "title": "Kebijakan Cuti Sakit",
+            "section": "Pemberitahuan",
+            "excerpt": "Pegawai harus memberi tahu manajer sesegera mungkin. Cuti sakit lebih dari dua hari kerja berturut-turut memerlukan dokumen pendukung yang diserahkan langsung melalui sistem HR, bukan melalui percakapan asisten."
+          }
+        ],
+        "tool_calls": [
+          {
+            "name": "search_hr_policy",
+            "status": "ok",
+            "duration_ms": 281
+          }
+        ],
+        "action_proposal": null,
+        "trace_id": "TR-f7afdfd28869410d924d8357b481b940",
+        "usage": {
+          "input_tokens": 1299,
+          "output_tokens": 75,
+          "latency_ms": 2609,
+          "estimated_cost": null
+        }
+      },
+      "expected_document": "HR-LEAVE-002",
+      "no_action_writes": true
+    }
+  ]
+}
